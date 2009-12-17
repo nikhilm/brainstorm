@@ -1,4 +1,8 @@
 package bencode;
+
+/**
+ * Represents a 32-bit bencoded integer.
+ */
 public class BInt extends BType {
     private int _value;
     public BInt( int n ) {

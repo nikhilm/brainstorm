@@ -1,6 +1,30 @@
+// Created: Thu Dec 17 2009
 package bencode;
 import java.io.*;
 
+/**
+ * Implements the bencode protocol, originally introduced in Bittorrent.
+ *
+ * The implementation is complete, except for arbitrary length integers.
+ * Currently it only implements int ( 32-bit ) integer support.
+ *
+ * @author Nikhil Marathe (nsm.nikhil@gmail.com)
+ * @version 0.1
+ *
+ * <code>
+ * import bencode.*;
+ *
+ * BDecoder dec = new BDecoder( [string to decode] );
+ * BType t = dec.parse();
+ * System.out.println( t.value() );
+ *
+ * </code>
+ *
+ * @see BInt
+ * @see BString
+ * @see BList
+ * @see BDict
+ */
 public class BDecoder {
     String text;
     int pos;
