@@ -1,0 +1,38 @@
+= Whiteboard =
+          Nikhil Marathe, 200801011@daiict.ac.in
+
+AppName is a drawing application which allows users in a network to *collaboratively* edit an image.
+
+== Features
+
+- Allow clients to host or join server
+- Real-time editing of images
+- Supports basic shapes like rectangle, circle and polygon
+- Text support
+- Undo support
+- Save final image to various formats
+
+== Details ==
+
+AppName is a simple drawing application, similar to Paint, with a twist.
+[quote]
+---------
+Imagine what could happen if you got 10 Picassos together!
+---------
+
+Rather than just one person drawing, it allows multiple people to communicate over the network and share in the drawing.
+This can be used to:
+
+- Create art
+- Hold discussions
+- Design a product with inputs coming from many people, like a whiteboard
+
+Another advantage is that everybody is equal. There is no separate server and client program. AppName incorporates both, so you simply start it, select whether you want to host or join and start scribbling.
+
+Since the time period of development is only one and a half months certain features such as gradients and advanced image transformations may not be incorporated. Even chat may be added later in the spirit of open source.
+
+== Architecture ==
+
+AppName is written in Java and uses Swing and the Java painting API for the drawing application. The standard network libraries are used for communication. A subset of the http://json.org[JSON] protocol, with a custom parser to communicate over TCP.
+
+The host synchronizes all the members. The protocol itself is not completely defined yet, but will be included in the final documentation ( Phase 2 ).
