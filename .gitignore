@@ -1,0 +1,5 @@
+*.class
+*.html
+build/
+doc/autobuild.py
+doc/abstract.pdf
