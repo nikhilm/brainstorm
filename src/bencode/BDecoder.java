@@ -133,7 +133,7 @@ public class BDecoder {
             num = "-" + num;
 
         pos++;
-        return new BInt( Integer.parseInt( num ) );
+        return new BInt( Long.parseLong(num) );
     }
 
     private char c() {
