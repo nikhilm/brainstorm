@@ -1,3 +1,4 @@
+import bencode.*;
 public class TestB {
     private void testEncode() {
         assert (new BInt(5)).encode() == "i5e";
