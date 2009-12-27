@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class ChatWidget extends Box {
     private JTextArea chatArea;
-    private JTextArea sendArea;
+    private JTextField sendField;
     public ChatWidget() {
         super(BoxLayout.Y_AXIS);
         setupGUI();
@@ -17,13 +17,13 @@ public class ChatWidget extends Box {
         chatArea.setPreferredSize( new Dimension( 200, 400 ) );
         chatArea.setEditable( false );
 
-        sendArea = new JTextArea( "What");
+        sendField = new JTextField( "What");
 
         add( new JScrollPane( chatArea ) );
         add( createVerticalStrut( 5 ) );
-        add( new JScrollPane( sendArea ) );
+        add( new JScrollPane( sendField ) );
 
-        sendArea.grabFocus();
+        sendField.grabFocus();
 
         setSize(200, 600);
         setVisible(true);
