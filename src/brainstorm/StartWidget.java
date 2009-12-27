@@ -37,7 +37,7 @@ public class StartWidget extends Box {
         setVisible(true);
     }
 
-    private void showHostPage() {
+    private void showJoinPage() {
         removeAll();
 
         final JTextField ip = new JTextField("<ip address>");
@@ -54,23 +54,36 @@ public class StartWidget extends Box {
             }
         });
         add(join);
+        nick.selectAll();
+        ip.selectAll();
+        ip.grabFocus();
+
+        validate();
+        repaint();
     }
 
-    private void showJoinPage() {
+    private void showHostPage() {
         
-        System.out.println("Called");
-        //removeAll();
+        removeAll();
 
-        final JTextField nick = new JTextField("<nickname>");
+        final JTextField nick = new JTextField("");
         add(nick);
+
+        final JTextField w = new JTextField("");
+        add(w);
+        final JTextField h = new JTextField("");
+        add(h);
 
         JButton host = new JButton("Host");
         host.addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
                 // TODO validation
-                brain.hostServer( nick.getText() );
+                brain.hostServer( nick.getText(), Integer.parseInt(w.getText()), Integer.parseInt(h.getText()) );
             }
         });
         add(host);
+
+        nick.grabFocus();
+        validate();
     }
 }
