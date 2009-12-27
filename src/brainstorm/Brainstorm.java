@@ -1,8 +1,12 @@
 package brainstorm;
 
+import java.util.concurrent.*;
+import java.net.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
+import bencode.*;
 
 public class Brainstorm extends JFrame {
     private JToolBar toolbar;
@@ -14,12 +18,20 @@ public class Brainstorm extends JFrame {
     private ChatWidget chat;
     private StartWidget menu;
 
+    private Canvas canvas;
+
+    Thread serverThread;
+
+    // Message Queue
+    BlockingQueue<BDict> mq;
+
     public Brainstorm() {
         super();
         setTitle("Brainstorm");
 
         setupGUI();
 
+        serverThread = null;
         // switch on only when we are connected
         toolbar.setVisible( false );
         chat.setVisible( false );
@@ -93,16 +105,39 @@ public class Brainstorm extends JFrame {
         // create a new thread with socket
         // or perhaps just NIO
         // and register events
-        System.out.println("Called");
+        menu.setVisible(false);
         remove( menu );
+
+        if( mq == null ) {
+            mq = new LinkedBlockingQueue<BDict>();
+        }
+        // new Client blah blah
 
         chat.setVisible( true );
         toolbar.setVisible( true );
+
+        // actually the canvas will be created on the first read when we get the size from the server
+        canvas = new Canvas(new Dimension(640, 480));
+        add(canvas);
+        validate();
     }
 
-    protected void hostServer( String nick ) {
+    protected void hostServer( String nick, int w, int h ) {
         // start a server
         // and then call joinServer with ( localhost, nick )
+        initServerThread();
+        joinServer("127.0.0.1", nick);
+    }
+
+    private void initServerThread() {
+        try {
+            if( serverThread == null ) {
+                serverThread = new Thread( new Server( InetAddress.getByName("127.0.0.1"), 7000 ) );
+            }
+            serverThread.start();
+        } catch( Exception e ) {
+            e.printStackTrace();
+        }
     }
 
     public void destroy() {
