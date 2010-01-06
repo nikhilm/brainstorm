@@ -15,10 +15,22 @@ public class Server implements Runnable {
 
     private Selector selector;
 
+    private ByteBuffer buffer = ByteBuffer.allocate(4096);
+
+    long startTime;
+    long serverTime;
+
     public Server(InetAddress h, int p) throws IOException {
         host = h;
         port = p;
+        startTime = System.currentTimeMillis();
+        updateTime();
         selector = initSelector();
+    }
+
+    void updateTime() {
+        long time = System.currentTimeMillis();
+        serverTime = time - startTime;
     }
 
     private Selector initSelector() throws IOException {
@@ -52,6 +64,9 @@ public class Server implements Runnable {
                     if( k.isAcceptable() ) {
                         accept(k);
                     }
+                    else if( k.isReadable() ) {
+                        read(k);
+                    }
                 }
             } catch( Exception e ) {
                 e.printStackTrace();
@@ -68,5 +83,22 @@ public class Server implements Runnable {
         socketChannel.configureBlocking(false);
 
         socketChannel.register(selector, SelectionKey.OP_READ);
+    }
+
+    private void read(SelectionKey k) throws IOException {
+        SocketChannel sockChan = (SocketChannel) k.channel();
+
+        buffer.clear();
+
+        int num;
+        try {
+            num = sockChan.read(buffer);
+        } catch( IOException ie ) {
+            k.cancel();
+            sockChan.close();
+            return;
+        }
+
+        System.err.println("Received data from " + sockChan.socket());
     }
 }
