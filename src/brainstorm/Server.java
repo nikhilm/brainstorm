@@ -8,6 +8,8 @@ import java.nio.channels.*;
 import java.nio.channels.spi.*;
 import java.nio.charset.*;
 
+import bencode.*;
+
 public class Server implements Runnable {
     private InetAddress host;
     private int port;
@@ -77,6 +79,8 @@ public class Server implements Runnable {
                         read(k);
                     }
                 }
+
+                updateTime();
             } catch( Exception e ) {
                 e.printStackTrace();
             }
@@ -110,10 +114,25 @@ public class Server implements Runnable {
             return;
         }
 
-        buffer.flip();
-        for( SocketChannel client : clients ) {
-            System.err.println(buffer.remaining());
-            client.write( buffer );
+        if( num < 0 ) {
+            return;
+        }
+
+        try {
+            Message m = Message.decode( buffer, num );
+            m.setServerTime( serverTime );
+            System.err.println(m);
+
+            for( SocketChannel client : clients ) {
+                try {
+                    client.write( m.encode() );
+                } catch ( IOException ioe ) {
+                    // client disconnected
+                    clients.remove(client);
+                }
+            }
+        } catch( MessageParseException mpe ) {
         }
     }
+
 }
