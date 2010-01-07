@@ -137,7 +137,11 @@ public class BDecoder {
     }
 
     private char c() {
-        return text.charAt(pos);
+        try {
+            return text.charAt(pos);
+        } catch (Exception e) {
+            throw new BException("Bad bencoded message");
+        }
     }
 
     private int expect( char ch ) {
