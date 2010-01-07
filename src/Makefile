@@ -1,11 +1,9 @@
 BUILDDIR=`pwd`/../build
-all: brainstorm icons
 
-brainstorm: bencode messages 
-	javac -d $(BUILDDIR) brainstorm/*.java -Xlint:deprecation
+all: brainstorm bencode icons
 
-messages: brainstorm/messages/*.java
-	#javac -d $(BUILDDIR) brainstorm/messages/*.java
+brainstorm/Brainstorm.java: brainstorm/*.java
+	javac -d $(BUILDDIR) $(SRCS) -Xlint:deprecation
 
 bencode: bencode/*.java
 	javac -d $(BUILDDIR) bencode/*.java
