@@ -6,6 +6,7 @@ import java.net.*;
 import java.nio.*;
 import java.nio.channels.*;
 import java.nio.channels.spi.*;
+import java.nio.charset.*;
 
 public class Server implements Runnable {
     private InetAddress host;
@@ -20,12 +21,20 @@ public class Server implements Runnable {
     long startTime;
     long serverTime;
 
+    private List<SocketChannel> clients;
+
     public Server(InetAddress h, int p) throws IOException {
         host = h;
         port = p;
+        reset();
+    }
+
+    void reset() throws IOException {
         startTime = System.currentTimeMillis();
         updateTime();
+        clients = new LinkedList<SocketChannel>();
         selector = initSelector();
+
     }
 
     void updateTime() {
@@ -82,7 +91,9 @@ public class Server implements Runnable {
         System.out.println("Accepted " + sock);
         socketChannel.configureBlocking(false);
 
-        socketChannel.register(selector, SelectionKey.OP_READ);
+        socketChannel.register(selector, SelectionKey.OP_READ );
+
+        clients.add(socketChannel);
     }
 
     private void read(SelectionKey k) throws IOException {
@@ -99,6 +110,10 @@ public class Server implements Runnable {
             return;
         }
 
-        System.err.println("Received data from " + sockChan.socket());
+        buffer.flip();
+        for( SocketChannel client : clients ) {
+            System.err.println(buffer.remaining());
+            client.write( buffer );
+        }
     }
 }
