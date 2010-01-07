@@ -16,6 +16,10 @@ public class BString extends BType {
         return String.format( "%1$d:%2$s", _value.length(), _value );
     }
 
+    public String prettyPrint() {
+        return value();
+    }
+
     public int hashCode() {
         return _value.hashCode();
     }

@@ -17,4 +17,8 @@ public class BInt extends BType {
     public String encode() {
         return "i"+_value+"e";
     }
+
+    public String prettyPrint() {
+        return String.valueOf(value());
+    }
 }

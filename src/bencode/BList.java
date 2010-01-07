@@ -27,4 +27,17 @@ public class BList extends BType {
         b.append("e");
         return b.toString();
     }
+
+    public String prettyPrint() {
+        StringBuilder b = new StringBuilder("[ ");
+
+        for( BType item : _value ) {
+            if( item != _value.get(0) )
+                b.append(", ");
+            b.append( item.prettyPrint() );
+        }
+
+        b.append(" ]");
+        return b.toString();
+    }
 }

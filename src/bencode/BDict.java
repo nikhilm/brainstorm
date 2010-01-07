@@ -48,4 +48,20 @@ public class BDict extends BType {
         b.append("e");
         return b.toString();
     }
+
+    public String prettyPrint() {
+        StringBuilder b = new StringBuilder("{\n");
+
+        for( BString k : _value.keySet() ) {
+            b.append( "  " );
+            b.append( k.value() );
+            b.append( " : " );
+            b.append( _value.get(k).prettyPrint() );
+            b.append( "\n" );
+        }
+
+        b.append("}");
+        return b.toString();
+
+    }
 }

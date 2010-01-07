@@ -31,4 +31,6 @@ public abstract class BType {
     public Type type() {
         return _type;
     }
+
+    public abstract String prettyPrint();
 }
